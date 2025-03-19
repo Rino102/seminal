@@ -5,7 +5,7 @@ const CharacterCard = ({ character, onViewDetail, onAddToFavorites }) => {
   const { name, gender, homePlanet, birthYear, hairColor, height, mass } = character;
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md w-80">
+    <div className="bg-white p-6 rounded-2xl shadow-md w-100">
       <h3 className="text-xl font-bold mb-2">{name}</h3>
       <p className="text-sm"><strong>Gender:</strong> {gender}</p>
       <p className="text-sm"><strong>Home Planet:</strong> {homePlanet}</p>
