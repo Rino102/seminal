@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Moderat:wght@700&display=swap');
+@import "tailwindcss";
+:root {
+    --background: #ffffff;
+    --foreground: #000000;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+}
+
+body {
+    font-family: "Moderat", sans-serif;
+}
+
+.button {
+    font-family: "Moderat", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    border-radius: 8px;
+    box-shadow: 0 0 16px 0 #00000014;
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+
+/* Primary: Black bg, White text */
+
+.button.primary {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    &:hover {
+        background-color: var(--color-foreground);
+        color: var(--color-background);
+    }
+}
+
+
+/* Tertiary: White bg, Black text */
+
+.button.tertiary {
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #000000;
+    &:hover {
+        background-color: #000000;
+        color: #ffffff;
+        border: 1px solid black;
+    }
+}
+
+
+/* Ghost: No bg, Blue text */
+
+.button.ghost {
+    background: transparent;
+    color: #1A73E8;
+}
+
+.button.ghost:hover {
+    background: #45B2FF1A;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.input-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.input-field:focus {
+    border-color: #1A73E8;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 10px;
+    border: none;
+    cursor: pointer;
+    background: none;
+    font-size: 16px;
+}
+
+.success-message {
+    color: #1A73E8;
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.input-container.error .input-field {
+    border-color: red;
+}
+
+.input-container.disabled .input-field {
+    background: #f2f2f2;
+    color: #999;
+    cursor: not-allowed;
+}
