@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import InputTick from "@/assets/svg/InputTick.jsx";
+import InputClose from "@/assets/svg/InputClose.jsx";
 
 const Input = ({ label, placeholder, type = "text", disabled }) => {
   const [value, setValue] = useState("");
@@ -7,12 +9,12 @@ const Input = ({ label, placeholder, type = "text", disabled }) => {
   const [error, setError] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
-  // Handle input change with validation
+  
   const handleChange = (e) => {
     const newValue = e.target.value;
     setValue(newValue);
 
-    // Validation logic based on input type
+    
     if (type === "number" && isNaN(newValue)) {
       setError("Must be a number");
     } else if (type === "text" && newValue.length < 3) {
@@ -22,7 +24,7 @@ const Input = ({ label, placeholder, type = "text", disabled }) => {
     }
   };
 
-  // Handle blur event (losing focus)
+  
   const handleBlur = () => {
     setIsFocused(false);
     setIsCompleted(!error && value.trim().length > 0);
@@ -45,17 +47,17 @@ const Input = ({ label, placeholder, type = "text", disabled }) => {
         />
 
         
-        {value && !disabled && (
-          <button className="clear-btn" onClick={() => setValue("")}>✖</button>
+        {value && !disabled && !isCompleted && (
+          <button className="clear-btn" onClick={() => setValue("")}><InputClose /></button>
         )}
 
         
-        {isCompleted && <span className="success-message">Available </span>}
+        {isCompleted && <span className="success-message flex gap-2">Available <InputTick /></span>}
       </div>
 
       
       
-      {error ? <p className="error-message">⚠ {error}</p> : <p className="message">{hint}</p>}
+      {error ? <p className="error-message">⚠ {error}</p> : <p className="text-gray-500">{hint}</p>}
     </div>
   );
 };

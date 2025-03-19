@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Moderat:wght@700&display=swap');
 @import "tailwindcss";
 :root {
-    --background: #ffffff;
-    --foreground: #000000;
+    --background: #000000;
+    --foreground: #ffffff;
 }
 
 @theme inline {
