@@ -1,68 +1,69 @@
 import Image from "next/image";
 import CharacterCard from "@/components/CharacterCard";
-//import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button";
 //import Input from "@/components/ui/Input";
 import { useState } from "react";
-import useFetch from "@/hooks/useFetch";
+import useCharacterFetch from "@/hooks/useCharacterFetch";
+import SkeletonCard from "@/components/CardSkelton";
+import { useRouter } from "next/router";
 
 
 export default function Home() {
 
-   // const [text, setText] = useState('');
-
-  
-
-      const { data, loading, error } = useFetch("/api/characters"); // Fetch from our secure API route
+    const [page, setPage] = useState(1);
+    const router = useRouter();
+    const { data, loading, error, total } = useCharacterFetch("/api/characters", page); 
     
-
-      if (loading) return <p className="text-center text-lg">Loading...</p>;
-      if (error) return <p className="text-center text-lg text-red-500">{error}</p>;
-
+    if (error) return <p className="text-center text-lg text-red-500">{error}</p>;
+    
   return (
-    
-        <>
-        {/*<Button variant="primary" onClick={() => console.log("Primary Clicked")}>
-        Primary Button
-      </Button>
+    <>
+        <div className="min-h-screen bg-gray-100 p-6">
+            <div className="flex justify-between mb-4">
+                <h1 className="text-3xl font-bold text-center mb-6">Star Wars Characters</h1>
+                <Button variant="primary" onClick={()=>router.push('/favorites')}>Favorites</Button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center">
+                {loading ? Array.from( { length: 12 } ).map( (_, index) => <SkeletonCard key= {index} /> ): 
 
-      <Button variant="Teritary" onClick={() => console.log("Primary Clicked")}>
-        Teritery
-      </Button>
+                    data?.map((character, index) => (
+                    <CharacterCard
+                        key={character.id}
+                        character={character}
+                    />
+                    ))
+                }
+            </div>
 
-      <Button variant="ghost" onClick={() => console.log("Primary Clicked")}>
-        Ghost
-      </Button>
+            {/* Pagination */}
+                {!loading &&
+                    <div className="flex justify-center items-center gap-4 mt-6">
+                        <Button
+                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={page === 1}
+                        variant={`primary ${
+                            page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700 text-white"
+                        }`}
+                        >
+                        Previous
+                        </Button>
 
+                        <span className="text-lg font-semibold">
+                        Page {page} of {total}
+                        </span>
 
-        <Input label="Enabled" placeholder="Enter text" />
-        <Input label="Number Input" placeholder="Enter a number" type="number" />
-        <Input label="Error Validation" placeholder="Min 3 characters" type="text" />
-        <Input label="Disabled Input" disabled />*/}
-
-
-<div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Star Wars Characters</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
-        {data?.results?.map((character, index) => (
-          <CharacterCard
-            key={index}
-            character={{
-              name: character.name,
-              gender: character.gender,
-              homePlanet: character.homeworld || "Unknown",
-              birthYear: character.birth_year,
-              hairColor: character.hair_color,
-              height: character.height,
-              mass: character.mass,
-            }}
-            onViewDetail={() => console.log("View Detail clicked for", character.name)}
-            onAddToFavorites={() => console.log("Added to Favourites:", character.name)}
-          />
-        ))}
-      </div>
-    </div>
-
-      </>
-      
+                        <Button
+                        onClick={() => setPage((prev) => (prev < total ? prev + 1 : prev))}
+                        disabled={page === total}
+                        variant={`primary ${
+                            page === total ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-700 text-white"
+                        }`}
+                        >
+                        Next
+                        </Button>
+                    </div>
+                }
+        </div>
+    </>
   );
 }

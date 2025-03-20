@@ -2,32 +2,34 @@ import React, { useState } from "react";
 import InputTick from "@/assets/svg/InputTick.jsx";
 import InputClose from "@/assets/svg/InputClose.jsx";
 
-const Input = ({ label, placeholder, type = "text", disabled }) => {
-  const [value, setValue] = useState("");
+const Input = ({ label, placeholder, type = "text", disabled, hints = 'Hint', value, onChange }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [hint, setHint] = useState("Hint");
+  const [hint, setHint] = useState(hints);
   const [error, setError] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
   
   const handleChange = (e) => {
     const newValue = e.target.value;
-    setValue(newValue);
 
     
-    if (type === "number" && isNaN(newValue)) {
+    if (type === "number" && isNaN(parseFloat(newValue))) {
       setError("Must be a number");
-    } else if (type === "text" && newValue.length < 3) {
-      setError("Minimum 3 characters required");
+    } else if (type === "text" && newValue.length < 1) {
+      setError("Minimum 1 characters required");
     } else {
       setError("");
     }
+
+    if (onChange) {
+        onChange(e);
+      }
   };
 
   
   const handleBlur = () => {
     setIsFocused(false);
-    setIsCompleted(!error && value.trim().length > 0);
+    setIsCompleted(!error && value?.trim().length > 0);
   };
 
   return (
@@ -48,11 +50,12 @@ const Input = ({ label, placeholder, type = "text", disabled }) => {
 
         
         {value && !disabled && !isCompleted && (
-          <button className="clear-btn" onClick={() => setValue("")}><InputClose /></button>
+          <button className="clear-btn" onClick={() => onChange({ target: { value: "" } })}><InputClose /></button>
         )}
 
         
         {isCompleted && <span className="success-message flex gap-2">Available <InputTick /></span>}
+        
       </div>
 
       
